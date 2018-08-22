@@ -1,0 +1,85 @@
+package application;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import core.CraftRecipe;
+import core.Item;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class CraftTableController implements Initializable{
+    @FXML
+    private TableView<CraftRecipeProperty> outputTable;
+    @FXML
+    private TableColumn<CraftRecipeProperty, Integer> outputIdColumn;
+    @FXML
+    private TableColumn<CraftRecipeProperty, String> outputNameColumn;
+    @FXML
+    private TableColumn<CraftRecipeProperty, Integer> outputNumColumn;
+
+    @FXML
+    private TableView<ItemProperty> inputTable;
+    @FXML
+    private TableColumn<ItemProperty, Integer> inputIdColumn;
+    @FXML
+    private TableColumn<ItemProperty, String> inputNameColumn;
+    @FXML
+    private TableColumn<ItemProperty, Integer> inputNumColumn;
+
+    @FXML
+    private ProgressBar craftProgressBar;
+
+    private ItemTableController itemTableController;
+
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    	outputIdColumn.setCellValueFactory(new PropertyValueFactory<CraftRecipeProperty, Integer>("outputId"));
+    	outputNameColumn.setCellValueFactory(new PropertyValueFactory<CraftRecipeProperty, String>("outputName"));
+    	outputNumColumn.setCellValueFactory(new PropertyValueFactory<CraftRecipeProperty, Integer>("outputNum"));
+
+    	inputIdColumn.setCellValueFactory(new PropertyValueFactory<ItemProperty, Integer>("id"));
+    	inputNameColumn.setCellValueFactory(new PropertyValueFactory<ItemProperty, String>("name"));
+    	inputNumColumn.setCellValueFactory(new PropertyValueFactory<ItemProperty, Integer>("num"));
+
+    	addCraftRecipe(CraftRecipe.TABLE);
+    	addCraftRecipe(CraftRecipe.STICK);
+
+    	outputTable.getSelectionModel().selectedItemProperty().addListener(
+    			(ov, old, current) -> {
+    				inputTable.getItems().clear();
+    				for (Item item : current.craftRecipe.inputItemList) {
+    					inputTable.getItems().add(new ItemProperty(item));
+    				}
+    			}
+
+    	);
+    }
+
+
+    @FXML
+    private void onCraftButton() {
+    	CraftRecipe recipe = outputTable.getSelectionModel().selectedItemProperty().get().craftRecipe;
+    	if (!itemTableController.hasItemList(recipe.inputItemList)) return;
+    	for (Item item : recipe.inputItemList)
+    		itemTableController.subItem(item);
+    	itemTableController.addItem(recipe.outputItem);
+    }
+
+    void addCraftRecipe(CraftRecipe craftRecipe) {
+    	outputTable.getItems().add(new CraftRecipeProperty(craftRecipe));
+    	for (Item item : craftRecipe.inputItemList) {
+    		inputTable.getItems().add(new ItemProperty(item));
+    	}
+    }
+
+    void setItemTableController(ItemTableController ctrl) {
+    	itemTableController = ctrl;
+    }
+}
