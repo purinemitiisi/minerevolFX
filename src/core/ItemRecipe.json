@@ -1,0 +1,12 @@
+{
+	"table":{
+		"recipe":{
+			"wood":4
+		}
+	},
+	"stick":{
+		"recipe":{
+			"wood":2
+		}
+	}
+}
