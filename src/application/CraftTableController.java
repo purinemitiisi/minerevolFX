@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import core.CraftRecipe;
 import core.Item;
+import core.ItemMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressBar;
@@ -35,6 +36,7 @@ public class CraftTableController implements Initializable{
     private ProgressBar craftProgressBar;
 
     private ItemTableController itemTableController;
+    private ItemMap itemMap;
 
 
 
@@ -81,5 +83,9 @@ public class CraftTableController implements Initializable{
 
     void setItemTableController(ItemTableController ctrl) {
     	itemTableController = ctrl;
+    }
+
+    void setItemMap(ItemMap im) {
+    	itemMap = im;
     }
 }

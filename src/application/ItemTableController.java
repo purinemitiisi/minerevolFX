@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import core.Item;
+import core.ItemData;
+import core.ItemMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -24,6 +26,8 @@ public class ItemTableController implements Initializable {
     @FXML
     private TableColumn<ItemProperty, Double> progressColumn;
 
+    private ItemMap itemMap;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	idColumn.setCellValueFactory(new PropertyValueFactory<ItemProperty, Integer>("id"));
@@ -36,6 +40,11 @@ public class ItemTableController implements Initializable {
 //    	tl.setCycleCount(Animation.INDEFINITE);
 //    	tl.play();
 
+    }
+
+    void updateItem(ItemData itemData) {
+    	ItemProperty ip = new ItemProperty(new Item(itemData,itemMap.get(itemData)));
+    	table.getItems().add(ip);
     }
 
     void addItem(Item item) {
@@ -75,6 +84,10 @@ public class ItemTableController implements Initializable {
    			if (!hasItem(item)) return false;
    		}
     	return true;
+    }
+
+    void setItemMap(ItemMap im) {
+    	itemMap = im;
     }
 
 

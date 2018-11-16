@@ -8,7 +8,7 @@ public class ItemMap extends EnumMap<ItemData, Integer> {
 		super(ItemData.class);
 	}
 
-	void add(Item item) {
+	public void add(Item item) {
 		int n = item.num;
 		if (containsKey(item.data)) {
 			n += get(item.data);
